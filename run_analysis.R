@@ -15,20 +15,32 @@
 # 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
 
 ##########################################################################################################
-
-
 # Clean up workspace
 rm(list=ls())
+TidyNames <- function(Names) {
+  Names = gsub("\\()","",Names)
+  Names = gsub("-std$","StdDev",Names)
+  Names = gsub("-mean","Mean",Names)
+  Names = gsub("^(t)","Time",Names)
+  Names = gsub("^(f)","Freq",Names)
+  Names = gsub("([Gg]ravity)","Gravity",Names)
+  Names = gsub("([Bb]ody[Bb]ody|[Bb]ody)","Body",Names)
+  Names = gsub("[Gg]yro","Gyro",Names)
+  Names = gsub("AccMag","AccMagnitude",Names)
+  Names = gsub("([Bb]odyaccjerkmag)","BodyAccJerkMagnitude",Names)
+  Names = gsub("JerkMag","JerkMagnitude",Names)
+  Names = gsub("GyroMag","GyroMagnitude",Names)
+}
 
 # 1. Merge the training and the test sets to create one data set.
 
 #set working directory to the location where the UCI HAR Dataset was unzipped
-wd <- file.path ("C:","Users","Wolfi","Getting-and-Cleaning-Data-Course-Project")
+wd <- file.path ("D:","Users","wbrandl","Coursera","Getting-and-Cleaning-Data-Course-Project")
 setwd (wd)
 if (!file.exists("data")){
   dir.create("data")
 }
-wd <- file.path ("C:","Users","Wolfi","Getting-and-Cleaning-Data-Course-Project","data")
+wd <- file.path ("D:","Users","wbrandl","Coursera","Getting-and-Cleaning-Data-Course-Project","data")
 setwd (wd)
 
 # Read in the data from files
@@ -86,28 +98,12 @@ finalDF = merge(finalDF,activityType,by='activityId',all.x=TRUE);
 colNames  = colnames(finalDF); 
 
 # 4. Appropriately label the data set with descriptive activity names. 
-
-# Cleaning up the variable names
-for (i in 1:length(colNames)) 
-{
-  colNames[i] = gsub("\\()","",colNames[i])
-  colNames[i] = gsub("-std$","StdDev",colNames[i])
-  colNames[i] = gsub("-mean","Mean",colNames[i])
-  colNames[i] = gsub("^(t)","Time",colNames[i])
-  colNames[i] = gsub("^(f)","Freq",colNames[i])
-  colNames[i] = gsub("([Gg]ravity)","Gravity",colNames[i])
-  colNames[i] = gsub("([Bb]ody[Bb]ody|[Bb]ody)","Body",colNames[i])
-  colNames[i] = gsub("[Gg]yro","Gyro",colNames[i])
-  colNames[i] = gsub("AccMag","AccMagnitude",colNames[i])
-  colNames[i] = gsub("([Bb]odyaccjerkmag)","BodyAccJerkMagnitude",colNames[i])
-  colNames[i] = gsub("JerkMag","JerkMagnitude",colNames[i])
-  colNames[i] = gsub("GyroMag","GyroMagnitude",colNames[i])
-};
+colNames <- sapply (colNames,TidyNames)
 
 # Reassigning the new descriptive column names to the finalData set
 colnames(finalDF) = colNames;
 
-# 5. Create a second, independent tidy data set with the average of each variable for each activity and each subject. 
+# 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
 
 # Create a new table, finalDataNoActivityType without the activityType column
 finalDataNoActivityType  = finalDF[,names(finalDF) != 'activityType'];
