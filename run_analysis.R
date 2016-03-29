@@ -35,12 +35,12 @@ TidyNames <- function(Names) {
 # 1. Merge the training and the test sets to create one data set.
 
 #set working directory to the location where the UCI HAR Dataset was unzipped
-wd <- file.path ("D:","Users","wbrandl","Coursera","Getting-and-Cleaning-Data-Course-Project")
+wd <- file.path ("C:","Users","Wolfi","Getting-and-Cleaning-Data-Course-Project")
 setwd (wd)
 if (!file.exists("data")){
   dir.create("data")
 }
-wd <- file.path ("D:","Users","wbrandl","Coursera","Getting-and-Cleaning-Data-Course-Project","data")
+wd <- file.path ("C:","Users","Wolfi","Getting-and-Cleaning-Data-Course-Project","data")
 setwd (wd)
 
 # Read in the data from files
